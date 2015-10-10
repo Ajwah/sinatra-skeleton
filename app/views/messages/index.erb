@@ -1,17 +1,28 @@
 <h1>All Messages</h1>
 <hr/>
 
-<% @messages.each do |message| %>
-  <div class="message">
-      <h3><a href="/messages/<%= message.id %>"><%= message.id %></a> <small>(by: <%= message.author %>)</small></h3    <p>
-      <%= message.content %>
-      <p></p>
-      Created at: <%= message.created_at  %>
-      <p></p>
-      <a href="http://<%= message.url %>"> <%= message.url %></a>
-    </p>
-  </div>
+<% Message.select(:author).distinct.each do |m| %>
+    <div class="message" id="<%= m.author %>">
+        <h3>Author <small>: <%= m.author %> </small></h3
+
+        <% Message.where(author: m.author).each do |message| %>
+          <div class="messages" id="<%= message.id %>">
+            <div class="inline">
+            <a class='id' href="/messages/<%= message.id %>"><%= message.id %></a>
+            </div>
+            <div class="inline">
+            <p class="msg_content">
+              <%= message.content %>
+            </p>
+            </div>
+            <p class="timestamp">
+              <%= message.created_at  %>
+            </p>
+            <a class="url" href="http://<%= message.url %>"> <%= message.url %></a>
+          </div>
+          <hr/>
+        <% end %>
+    </div>
 <% end %>
 
-<hr/>
 <a href="/messages/new">Post a message... It's FREE (for now)!</a>

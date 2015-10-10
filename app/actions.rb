@@ -30,3 +30,10 @@ post '/messages' do
     erb :'messages/new'
   end
 end
+
+Message.select(:author).distinct.each do |m|
+
+  Message.where(author: m.author).each do |message|
+
+  end
+end
